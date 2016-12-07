@@ -1,4 +1,12 @@
 #!/usr/bin/python
+#
+# UV sphere mesh experiment
+# reference:
+#   https://gamedevdaily.io/four-ways-to-create-a-mesh-for-a-sphere-d7956b825db4#.jgbu4qs54
+#
+#   https://github.com/zhongyn/opengl-8-ball-pool-game
+#
+import math
 
 def main():
   radius = int(input("circle radius? "))
@@ -15,15 +23,25 @@ def main():
   parallels_count =  int(input("parallels_count? "))
   meridians_count =  int(input("meridians_count? "))
 
-  for j in range(parallels_count):
-    #parallel = PI * (j+1) / parallels_count
-    parallel = PI * (j) / parallels_count    
-    print("parallel = ", parallel)
+  for i in range(parallels_count):
+    #thetaR = PI * (i+1) / parallels_count    # GN: why +1 ?
+    thetaR = (PI * (i) / parallels_count) - (PI/2)
+
+    
+    y = math.sin(thetaR)    # sin(thetaInRadians) gives Y of circle at this parallel     
+    rlat = math.cos(thetaR) # cos(thetaInRadians) gives circle radius at this parallel 
+
+    print "theta = %f %.3f  (r=%.3f)" % (thetaR * 180.0/PI, thetaR, rlat)
   
-    for i in range(meridians_count):
-      meridian = 2.0 * PI * i / meridians_count
-      print("  meridian = ", meridian)
-  # return spherical_to_cartesian(meridian, parallel)
+    for j in range(meridians_count):
+      phi = 2.0 * PI * j / meridians_count
+      x = rlat * math.cos(phi)      
+      z = rlat * math.sin(phi)      
+      print "  v(%d) [%.4f, %4f] [%0.3f,%0.3f,%0.3f]" % (i*parallels_count+j, phi, thetaR, x, y, z)
+
+
+
+  # return spherical_to_cartesian(phi, theta)
 
 
 main()  
