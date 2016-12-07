@@ -18,6 +18,8 @@
 using namespace std;
 #include <SOIL/SOIL.h>
 
+#include "poolgame.h"
+
 
 // Global variables
 int screen_width=700, screen_height=700;
