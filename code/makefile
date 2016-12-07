@@ -3,6 +3,7 @@ CC = g++
 LDLIBS=-lglut -lSOIL -lGLEW -lGL -lm -lstdc++ 
 DEBUG = -g
 CFLAGS = -Wall -c -std=c++0x $(DEBUG)
+CFLAGS += -DGL_ES_VERSION_2_0
 LFLAGS = -Wall $(DEBUG)
 
 pool: $(OBJS)
@@ -20,4 +21,4 @@ poolgame.o: poolgame.cpp poolgame.h
 
 
 clean:
-	\rm *.o *~ pool
+	rm *.o *~ pool

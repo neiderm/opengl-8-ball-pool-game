@@ -1,4 +1,6 @@
-
+#ifdef GL_ES
+precision mediump float;
+#endif
 uniform vec4 ambient;
 uniform vec4 diffuse;
 uniform vec4 specular;
@@ -10,6 +12,10 @@ uniform sampler2D mytexture;
 in vec3 fN;
 in vec3 fE;
 in vec3 fL;
+
+#ifdef GL_ES
+out vec4 FragColor;
+#endif
 
 void main()
 {
@@ -33,6 +39,9 @@ void main()
 		spe = vec4(0.0, 0.0, 0.0, 1.0);
 	}
 
+#ifdef GL_ES
+	FragColor = vec4((amb+dif+spe).xyz, 1.0);
+#else
 	gl_FragColor = vec4((amb+dif+spe).xyz, 1.0);
-
+#endif
 }
