@@ -8,40 +8,53 @@
 #
 import math
 
+PI = 3.14159
+
 def main():
-  radius = int(input("circle radius? "))
-  PI = 3.14159
-  r = radius
-  c = 2*PI*r
-  print("circumf = ", 2*PI*r)
-  a = PI*r*r
-  print("area = ", PI*r*r)
-  ratio = c / a
-#  return(ratio)
-  print("the ratio of the circumference to the area is",ratio)
+#  radius = int(input("circle radius? "))
+#  PI = 3.14159
+  r = 1  # radius ... unit circle
 
   parallels_count =  int(input("parallels_count? "))
   meridians_count =  int(input("meridians_count? "))
 
   for i in range(parallels_count):
+
     #thetaR = PI * (i+1) / parallels_count    # GN: why +1 ?
-    thetaR = (PI * (i) / parallels_count) - (PI/2)
+    thetaR = (i * PI / parallels_count) #  - (PI/2)
 
-    
-    y = math.sin(thetaR)    # sin(thetaInRadians) gives Y of circle at this parallel     
-    rlat = math.cos(thetaR) # cos(thetaInRadians) gives circle radius at this parallel 
+    print "theta = %fd %.3fr  (R=%.3f)" % (thetaR * 180.0/PI, thetaR, math.cos(thetaR))
 
-    print "theta = %f %.3f  (r=%.3f)" % (thetaR * 180.0/PI, thetaR, rlat)
-  
     for j in range(meridians_count):
-      phi = 2.0 * PI * j / meridians_count
-      x = rlat * math.cos(phi)      
-      z = rlat * math.sin(phi)      
-      print "  v(%d) [%.4f, %4f] [%0.3f,%0.3f,%0.3f]" % (i*parallels_count+j, phi, thetaR, x, y, z)
 
+      phi = j * 2.0 * PI / meridians_count  # angle in radians from circumference of unit circle 
 
+      vec3 = g_spherical_to_cartesian(phi, thetaR)
 
-  # return spherical_to_cartesian(phi, theta)
+      print "  v(%d) [%.4f] [%0.3f, %0.3f, %0.3f]" % (i*parallels_count+j, phi, 
+          vec3[0], vec3[1], vec3[2])
 
+# zhongyaonan method
+def z_spherical_to_cartesian(phi, thetaR):
+
+  rlat = math.sin(thetaR)  # circle radius at this parallel
+  x = rlat * math.sin(phi)      
+  y = math.cos(thetaR)
+  z = rlat * math.cos(phi)
+  vec3 = [x, y, z]
+
+  return vec3
+
+# my method
+def g_spherical_to_cartesian(phi, thetaR):
+  thetaR -=  PI / 2 
+  rlat = math.cos(thetaR)  # circle radius at this parallel
+  x = rlat * math.cos(phi)      
+  y = math.sin(thetaR)
+  z = rlat * math.sin(phi)
+  vec3 = [x, y, z]
+
+  return vec3
+  
 
 main()  
