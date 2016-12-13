@@ -17,18 +17,21 @@ import math
 
 PI = math.pi  # 3.14159
 
-def main():
-#  radius = int(input("circle radius? "))
-#  PI = 3.14159
-  r = 1  # radius ... unit circle
 
-  parallels_count =  int(input("parallels_count? "))
-  meridians_count =  int(input("meridians_count? "))
+
+def makeSphereVertices(radius, slices, stacks):
+
+
+  parallels_count =  stacks
+  meridians_count =  slices
+
+  stepsk = PI / parallels_count
+  stepsl = 2 * PI / meridians_count
 
   for i in range(parallels_count):
 
     thetaR =      0  + (i * PI / parallels_count)  #  Z
-    thetaR =  -PI/2  + (i * PI / parallels_count)  # G
+#    thetaR =  -PI/2  + (i * PI / parallels_count)  # G
 
     rlat = math.cos(thetaR)    # circle radius at this parallel
 
@@ -38,10 +41,30 @@ def main():
 
       phi = j * 2.0 * PI / meridians_count  # angle in radians from circumference of unit circle 
 
-      vec3 = g_spherical_to_cartesian(phi, thetaR)
+      print "  v(%2d) [%7.4f] " % (i*parallels_count+j, phi)
 
-      print "  v(%2d) [%7.4f] [%7.3f, %7.3f, %7.3f]" % (i*parallels_count+j, phi, 
-          vec3[0], vec3[1], vec3[2])
+      # first point
+      ex =  math.sin(thetaR) * math.sin(phi)
+      ey =  math.cos(thetaR)
+      ez = math.sin(thetaR) * math.cos(phi)
+
+      tx = -(-math.atan2(ex, ey) / PI + 1.0) / 2
+      ty = -math.acos(ez) / PI
+
+      # second point
+      ex = (math.sin(thetaR + stepsk) * math.sin(phi))
+      ey =  math.cos(thetaR + stepsk)
+      ez = (math.sin(thetaR + stepsk) * math.cos(phi))
+
+      tx = -(-math.atan2(ex, ey) / PI + 1.0) / 2
+      ty = -math.acos(ez) / PI
+
+
+      #vec3 = z_spherical_to_cartesian(phi, thetaR)
+
+      #print "  v(%2d) [%7.4f] [%7.3f, %7.3f, %7.3f]" % (i*parallels_count+j, phi, 
+      #    vec3[0], vec3[1], vec3[2])
+
 
 
 # zhongyaonan method
@@ -49,7 +72,7 @@ def z_spherical_to_cartesian(phi, thetaR):
 
   # glm::vec3 v1 = glm::vec3(sin(theta) * sin(phi), cos(theta), sin(theta) * cos(phi));
   # glm::vec3 v2 = glm::vec3(sin(theta + stepsk) * sin(phi), cos(theta + stepsk), sin(theta + stepsk) * cos(phi));
-  x = math.sin(theta) * math.sin(phi)      
+  x = math.sin(thetaR) * math.sin(phi)      
   y = math.cos(thetaR)
   z = rlat * math.cos(phi)
   vec3 = [x, y, z]
@@ -69,5 +92,17 @@ def g_spherical_to_cartesian(phi, thetaR):
 
   return vec3
   
+  
+def main():
+#  radius = int(input("circle radius? "))
+  radius = 1.0
+  slices = 8
+  stacks = 4
+  #      mStrips = divide / 2;
+  #      mStripePointsNum = (divide + 1) * 2;
+  makeSphereVertices(radius, slices, stacks)
+    
 
 main()  
+
+
