@@ -41,8 +41,6 @@ def makeSphereVertices(radius, slices, stacks):
 
       phi = j * 2.0 * PI / meridians_count  # angle in radians from circumference of unit circle 
 
-      print "  v(%2d) [%7.4f] " % (i*parallels_count+j, phi)
-
       # first point
       ex =  math.sin(thetaR) * math.sin(phi)
       ey =  math.cos(thetaR)
@@ -51,6 +49,8 @@ def makeSphereVertices(radius, slices, stacks):
       tx = -(-math.atan2(ex, ey) / PI + 1.0) / 2
       ty = -math.acos(ez) / PI
 
+      print "  v(%2d) [%7.4f] (%7.4f, %7.4f, %7.4f)" % (i*meridians_count+j, phi, ex, ey, ez)
+      
       # second point
       ex = (math.sin(thetaR + stepsk) * math.sin(phi))
       ey =  math.cos(thetaR + stepsk)
@@ -59,6 +59,7 @@ def makeSphereVertices(radius, slices, stacks):
       tx = -(-math.atan2(ex, ey) / PI + 1.0) / 2
       ty = -math.acos(ez) / PI
 
+      print "        [%7.4f] (%7.4f, %7.4f, %7.4f)" % (phi, ex, ey, ez)
 
       #vec3 = z_spherical_to_cartesian(phi, thetaR)
 
@@ -67,20 +68,9 @@ def makeSphereVertices(radius, slices, stacks):
 
 
 
-# zhongyaonan method
-def z_spherical_to_cartesian(phi, thetaR):
-
-  # glm::vec3 v1 = glm::vec3(sin(theta) * sin(phi), cos(theta), sin(theta) * cos(phi));
-  # glm::vec3 v2 = glm::vec3(sin(theta + stepsk) * sin(phi), cos(theta + stepsk), sin(theta + stepsk) * cos(phi));
-  x = math.sin(thetaR) * math.sin(phi)      
-  y = math.cos(thetaR)
-  z = rlat * math.cos(phi)
-  vec3 = [x, y, z]
-
-  return vec3
 
 # my method
-def g_spherical_to_cartesian(phi, thetaR):
+def test(phi, thetaR):
 
 #  thetaR -=  PI / 2 
 
